@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local env / secrets, in case any get added later
+.env
+.env.local
+
+# Logs
+*.log
+
+# Common build artifacts, in case this ever grows beyond a single file
+node_modules/
+dist/
+.cache/
