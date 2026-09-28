@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://thestreethealthproject.org/sitemap.xml
