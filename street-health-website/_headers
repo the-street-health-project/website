@@ -1,0 +1,17 @@
+# Cloudflare Pages response headers
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# NiFi (our water app, in nifi/) has a "Use my location" button, so it may ask for
+# location. The "!" line removes the rule above for these pages before setting their own.
+/nifi/*
+  ! Permissions-Policy
+  Permissions-Policy: camera=(), microphone=(), geolocation=(self)
+
+# Photos rarely change, so browsers can keep them for a day.
+# (CSS/JS use Cloudflare's default: always revalidated, so edits show up right away.)
+/assets/img/*
+  Cache-Control: public, max-age=86400
