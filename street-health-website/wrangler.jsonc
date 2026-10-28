@@ -1,0 +1,14 @@
+// Cloudflare settings for this website.
+// Cloudflare uses this file when it deploys the site as a Worker ("npx wrangler deploy").
+// Cloudflare Pages ignores it. Either way there's no build step: every file here is served as-is.
+{
+  // Must match the name of your Worker in the Cloudflare dashboard.
+  "name": "website",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": ".",
+    // Missing pages show 404.html; "kits.html" is also served at "/kits".
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

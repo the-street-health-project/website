@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>NiFi</title>
+    <meta name="description" content="Understand and reduce nitrate in Iowa waters, using public water data." />
+    <meta name="theme-color" content="#020604" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <script>
+      // If NiFi's code can't load (a file missing from the website, or the page opened straight from a file
+      // on this computer), say so instead of leaving a blank page. Styled inline, since the CSS may be missing too.
+      (function () {
+        function show() {
+          var root = document.getElementById('root');
+          if (!root || root.firstChild) return;
+          var local = location.protocol === 'file:';
+          var inSite = /\/nifi\/[^/]*$/.test(location.pathname);
+          var btn = 'display:inline-block;margin:6px 6px 0 0;padding:12px 18px;border-radius:12px;font-weight:700;text-decoration:none;';
+          root.innerHTML =
+            '<div style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#020604;color:#eafff2;font:18px/1.5 system-ui,sans-serif">' +
+            '<div style="max-width:30em"><p style="margin:0 0 8px;font-size:28px;font-weight:800">NiFi couldn’t load.</p><p style="margin:0 0 16px;color:#b9e2c9">' +
+            (local
+              ? 'NiFi has to be opened from its website, not from a file on this computer. Open thestreethealthproject.org/nifi/ instead.'
+              : 'Some of its files didn’t download. Try reloading. If it keeps happening, part of NiFi is missing from the website.') +
+            '</p><a href="" style="' + btn + 'background:#39ff88;color:#02140a">Reload</a>' +
+            (inSite ? '<a href="../" style="' + btn + 'border:1.5px solid #39ff88;color:#eafff2">Back to The Street Health Project</a>' : '') +
+            '</div></div>';
+        }
+        window.addEventListener('error', function (e) {
+          var t = e.target;
+          if (t && (t.tagName === 'SCRIPT' || (t.tagName === 'LINK' && t.rel === 'stylesheet'))) show();
+        }, true);
+        window.addEventListener('load', function () { setTimeout(show, 4000); });
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-DuLmXJwp.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-BVQXJMCF.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-BTXsUwKe.css">
+  <link rel="manifest" href="./manifest.webmanifest"></head>
+  <body>
+    <div id="root"></div>
+    <noscript>NiFi needs JavaScript to show water data.</noscript>
+  </body>
+</html>
