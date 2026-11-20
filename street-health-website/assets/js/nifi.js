@@ -180,12 +180,14 @@
       el.style.transformOrigin = "50% " + (window.innerHeight / 2 - top) + "px";
     });
     root.classList.add("nx-on");
+    if (window.SHPLenis) window.SHPLenis.stop(); // no smooth-scrolling underneath the dive
     lock(true);
     timer = window.setTimeout(function () { window.location.href = url; }, DIVE_MS);
   }
   function reset() {
     window.clearTimeout(timer);
     lock(false);
+    if (window.SHPLenis) window.SHPLenis.start();
     root.classList.remove("nx-on");
     sinking.forEach(function (el) { el.style.transformOrigin = ""; });
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);

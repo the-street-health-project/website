@@ -165,7 +165,7 @@
       if (celebrated || reduce || !Element.prototype.animate) return;
       celebrated = true;
       var c = boxCenter();
-      var colors = ["#DF513E", "#BF4435", "#2B241C", "#EF8A6E", "#E9C46A"];
+      var colors = ["#DF513E", "#BF4435", "#1B2A41", "#EF8A6E", "#E9C46A"];
       for (var i = 0; i < 40; i++) {
         var p = doc.createElement("span");
         p.className = "confetti";

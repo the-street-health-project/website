@@ -166,7 +166,7 @@
     var dpr = Math.min(2, window.devicePixelRatio || 1);
     var w = 0, h = 0, parts = [], onScreen = false, running = false;
     var mouse = { x: -9999, y: -9999 };
-    var tone = dark ? "245,233,208" : "43,36,28";
+    var tone = dark ? "245,233,208" : "27, 42, 65";
 
     function make(anywhere) {
       return {

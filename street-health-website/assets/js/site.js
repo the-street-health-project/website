@@ -5,6 +5,21 @@
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /* The cross-fade between pages (@view-transition in styles.css) is skipped when a page was loaded
+     ahead of time (the trip back from NiFi does that). The browser then rejects the fade's promises,
+     which is expected and harmless; catching them keeps the console clean. */
+  window.addEventListener("pagereveal", function (e) {
+    var vt = e.viewTransition;
+    if (!vt) return;
+    [vt.ready, vt.finished, vt.updateCallbackDone].forEach(function (p) { if (p && p.catch) p.catch(function () {}); });
+  });
+  window.addEventListener("pageswap", function (e) {
+    var vt = e.viewTransition;
+    if (!vt) return;
+    [vt.ready, vt.finished, vt.updateCallbackDone].forEach(function (p) { if (p && p.catch) p.catch(function () {}); });
+  });
+
   function money(n) { return "$" + Number(n).toLocaleString("en-US"); }
 
   /* ---- Fill in numbers and links from site-data.js ---- */

@@ -9,20 +9,30 @@
         cream page arrives.
    It plays when you click the logo on NiFi's page here, and when you leave the NiFi app through its
    "A program of The Street Health Project" link: the app loads this same file and calls SHPReturn.play().
-   That's why its styles live in this file too. */
+   That's why its styles live in this file too.
+   It never holds anyone up: a tap, click, Enter or Space skips straight to the page (Esc cancels and
+   stays put), and the full 5 seconds plays once per visit. After that it's the same show in 2 seconds. */
 (function () {
   "use strict";
   if (window.SHPReturn) return;
 
-  var MS = 5000;
+  var FULL = 5000, QUICK = 2000;
+  var SEEN_KEY = "shp-return-seen";
   var CREAM = "#F5E9D0", RED = "#DF513E", BLACK = "#020604";
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var touchFirst = window.matchMedia && !window.matchMedia("(hover: hover)").matches;
   // A few things from every Care Kit, orbiting the cross near the end.
   var KIT = ["Bandages", "Gauze", "Toothbrush", "Socks", "Hand sanitizer", "Lip balm", "Medical tape", "Water"];
 
-  // Percentages are moments in the 5 s: 10% = 0.5 s, 50% = 2.5 s, 90% = 4.5 s.
-  var CSS =
-    ".rt{position:fixed;inset:0;z-index:2147483000;overflow:hidden;contain:strict;cursor:progress}" +
+  // Has this visitor already seen the full version during this visit? (Private browsing can block storage.)
+  function seen() { try { return window.sessionStorage.getItem(SEEN_KEY) === "1"; } catch (e) { return false; } }
+  function markSeen() { try { window.sessionStorage.setItem(SEEN_KEY, "1"); } catch (e) { /* fine: it just plays in full again */ } }
+
+  // The styles for a run of MS milliseconds. Percentages are moments in the run (in the full 5 s,
+  // 10% = 0.5 s, 50% = 2.5 s, 90% = 4.5 s), so the quick version is the same show, sped up.
+  function css(MS) {
+    var flip = Math.round(700 * MS / FULL);
+    return ".rt{position:fixed;inset:0;z-index:2147483000;overflow:hidden;contain:strict;cursor:pointer;-webkit-tap-highlight-color:transparent}" +
     ".rt>*{position:absolute;pointer-events:none}" +
     ".rt-dark{inset:0;animation:rt-dark " + MS + "ms linear both}" +
     "@keyframes rt-dark{0%{background:rgba(2,6,4,0)}6%,100%{background:rgba(2,6,4,.9)}}" +
@@ -42,7 +52,7 @@
     "@keyframes rt-ring{0%,43%{transform:scale(0);opacity:0}44%{transform:scale(.02);opacity:1;animation-timing-function:cubic-bezier(.1,.6,.3,1)}62%,100%{transform:scale(3.2);opacity:0}}" +
     /* the tiles: each turns over on a diagonal, with its own perspective, in a wave from the middle */
     ".rt-field,.rt-cross{inset:0}" +
-    ".rt-t{position:absolute;transform-style:preserve-3d;animation:rt-flip 700ms cubic-bezier(.3,1.25,.45,1) both;animation-delay:var(--d)}" +
+    ".rt-t{position:absolute;transform-style:preserve-3d;animation:rt-flip " + flip + "ms cubic-bezier(.3,1.25,.45,1) both;animation-delay:var(--d)}" +
     "@keyframes rt-flip{from{transform:perspective(700px) rotate3d(1,1,0,0deg)}to{transform:perspective(700px) rotate3d(1,1,0,180deg)}}" +
     ".rt-f{position:absolute;inset:-.5px;-webkit-backface-visibility:hidden;backface-visibility:hidden}" +
     ".rt-front{background:" + BLACK + ";box-shadow:inset 0 0 0 1px rgba(57,255,136,.3)}" +
@@ -68,20 +78,28 @@
     /* the span is a zero-size point on the orbit, so turning it keeps the label centered there */
     ".rt-item span{position:absolute;left:0;top:0;width:0;height:0;animation:rt-upright " + MS + "ms linear both}" +
     "@keyframes rt-upright{0%,62%{rotate:50deg}84%{rotate:-130deg;animation-timing-function:cubic-bezier(.6,0,.9,.4)}89%,100%{rotate:-180deg}}" +
-    ".rt-item b{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;padding:.45em .9em;border-radius:999px;background:#fff;color:#2B241C;" +
-      "font:700 clamp(12px,1.6vmin,16px)/1 system-ui,sans-serif;box-shadow:0 0 0 2px " + RED + ",0 10px 24px -8px rgba(43,36,28,.45)}";
+    ".rt-item b{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;padding:.45em .9em;border-radius:999px;background:#fff;color:#1B2A41;" +
+      "font:700 clamp(12px,1.6vmin,16px)/1 system-ui,sans-serif;box-shadow:0 0 0 2px " + RED + ",0 10px 24px -8px rgba(27, 42, 65,.45)}" +
+    /* the skip hint: a small dark pill near the bottom, readable on the dark screen and on the cream */
+    ".rt-skip{left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);padding:.6em 1.05em;border-radius:999px;" +
+      "background:rgba(2,6,4,.78);color:#fff;font:600 13px/1 system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;" +
+      "box-shadow:0 0 0 1px rgba(255,255,255,.2),0 8px 20px -8px rgba(0,0,0,.6);opacity:0;animation:rt-skip " + MS + "ms linear both}" +
+    "@keyframes rt-skip{0%,10%{opacity:0}16%,88%{opacity:1}95%,100%{opacity:0}}";
+  }
 
   // Two heartbeats across the screen (the path is 1 long, so it can draw itself with a dash).
   var ECG = '<svg class="rt-ecg" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="' +
     "M0 100 H290 L306 90 L318 100 H342 L356 28 L372 172 L386 66 L398 100 H560 L576 90 L588 100 H612 L626 28 L642 172 L656 66 L668 100 H1000" +
     '"/></svg>';
 
-  function addStyles() {
-    if (document.getElementById("rt-styles")) return;
-    var s = document.createElement("style");
-    s.id = "rt-styles";
-    s.textContent = CSS;
-    document.head.appendChild(s);
+  function addStyles(ms) {
+    var s = document.getElementById("rt-styles");
+    if (!s) {
+      s = document.createElement("style");
+      s.id = "rt-styles";
+      document.head.appendChild(s);
+    }
+    s.textContent = css(ms);
   }
 
   // Where the logo is on the page we're going to. On this site, the logo itself; inside NiFi, where
@@ -98,7 +116,8 @@
     return { x: Math.max(0, (W - 1200) / 2) + gutter + size / 2, y: 38, size: size };
   }
 
-  function build() {
+  function build(ms) {
+    var k = ms / FULL; // the quick version runs every moment at the same point of the show, just sooner
     var W = window.innerWidth, H = window.innerHeight;
     // Tiles about a ninth of the short side; a grid laid out so one tile sits exactly in the middle.
     var T = Math.max(36, Math.floor(Math.min(W, H) / 11));
@@ -113,7 +132,7 @@
         // The cross: arms 3 tiles wide and 9 tiles long, centered.
         var inCross = (di <= 1 && dj <= 4) || (dj <= 1 && di <= 4);
         // The wave starts with the shockwave (2.2 s) and reaches the corners by about 3.1 s.
-        var delay = Math.round(2200 + 900 * (Math.hypot(i - ic, j - jc) / far));
+        var delay = Math.round(k * (2200 + 900 * (Math.hypot(i - ic, j - jc) / far)));
         var tile = '<div class="rt-t" style="left:' + (ox + i * T) + "px;top:" + (oy + j * T) + "px;width:" + T + "px;height:" + T +
           "px;--d:" + delay + "ms;--c:" + (inCross ? RED : CREAM) + '"><div class="rt-f rt-front"></div><div class="rt-f rt-back"></div></div>';
         if (inCross) cross += tile; else field += tile;
@@ -148,16 +167,23 @@
       // The beat glow sits above the dark tiles; it's gone long before they turn cream.
       '<div class="rt-pulse" aria-hidden="true"></div>' +
       '<div class="rt-ring" aria-hidden="true"></div>' +
-      '<div class="rt-orbit" aria-hidden="true">' + items + "</div>" + ECG;
+      '<div class="rt-orbit" aria-hidden="true">' + items + "</div>" + ECG +
+      '<div class="rt-skip" aria-hidden="true">' + (touchFirst ? "Tap" : "Click") + " anywhere to skip</div>";
     return rt;
   }
 
-  // Nothing scrolls while it plays; Esc cancels and stays put.
-  var overlay = null, timer = 0;
-  var SCROLL_KEYS = { " ": 1, ArrowUp: 1, ArrowDown: 1, PageUp: 1, PageDown: 1, Home: 1, End: 1 };
+  // Nothing scrolls while it plays. A tap, click, Enter or Space skips ahead; Esc cancels and stays put.
+  var overlay = null, timer = 0, target = "";
+  var SCROLL_KEYS = { ArrowUp: 1, ArrowDown: 1, PageUp: 1, PageDown: 1, Home: 1, End: 1 };
   function block(e) { e.preventDefault(); }
+  function go() {
+    if (!overlay) return;
+    window.clearTimeout(timer);
+    window.location.href = target;
+  }
   function onKey(e) {
     if (e.key === "Escape") { reset(); return; }
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); return; }
     if (SCROLL_KEYS[e.key]) e.preventDefault();
   }
   function lock(on) {
@@ -169,6 +195,7 @@
   function reset() {
     window.clearTimeout(timer);
     lock(false);
+    if (window.SHPLenis) window.SHPLenis.start();
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
     overlay = null;
   }
@@ -185,12 +212,17 @@
   function play(url) {
     if (reduceMotion) { window.location.href = url; return; }
     if (overlay) return;
-    addStyles();
+    var ms = seen() ? QUICK : FULL;
+    markSeen();
+    target = url;
+    addStyles(ms);
     prerender(url);
-    overlay = build();
+    overlay = build(ms);
+    overlay.addEventListener("click", go);
     document.body.appendChild(overlay);
+    if (window.SHPLenis) window.SHPLenis.stop(); // no smooth-scrolling underneath the transition
     lock(true);
-    timer = window.setTimeout(function () { window.location.href = url; }, MS);
+    timer = window.setTimeout(go, ms);
   }
 
   window.SHPReturn = { play: play };

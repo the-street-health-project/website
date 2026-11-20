@@ -261,7 +261,7 @@
       if (reduce || !Element.prototype.animate) return;
       var r = from.getBoundingClientRect();
       var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      var colors = ["#DF513E", "#BF4435", "#2B241C", "#EF8A6E", "#E9C46A"];
+      var colors = ["#DF513E", "#BF4435", "#1B2A41", "#EF8A6E", "#E9C46A"];
       for (var i = 0; i < 44; i++) {
         var c = doc.createElement("span");
         c.className = "confetti";
