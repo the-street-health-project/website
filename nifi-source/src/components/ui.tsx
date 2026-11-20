@@ -38,11 +38,12 @@ export function Card({ children, className = '', as = 'section' }: { children: R
   );
 }
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'quiet' };
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'quiet' | 'danger' };
 
 export function Button({ variant = 'primary', className = '', ...props }: ButtonProps) {
   const styles = {
-    primary: 'cc-key cc-key--primary bg-sky text-on-accent hover:bg-sky-dark',
+    primary: 'cc-key cc-key--primary bg-accent text-white hover:bg-accent-dark',
+    danger: 'cc-key cc-key--danger bg-high text-white hover:brightness-110',
     secondary: 'cc-key cc-key--secondary bg-card text-ink border-2 border-sky hover:bg-sky-soft',
     quiet: 'bg-transparent text-sky underline underline-offset-4 hover:text-sky-dark',
   }[variant];

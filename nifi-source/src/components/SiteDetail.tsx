@@ -14,11 +14,10 @@ import { explainReading, explainSample, formatMgL } from '../lib/nitrate';
 import { computeTrend, describeTrend } from '../lib/trend';
 import { useData, useFlow, useReadings } from '../state/data';
 import { useNav } from '../state/nav';
+import { FlowChart, TrendChart } from './Charts';
 import { CountUp } from './CountUp';
-import { FlowChart } from './FlowChart';
 import { SiteConditions } from './SiteConditions';
 import { SplitPanel } from './SplitPanel';
-import { TrendChart } from './TrendChart';
 import { ExternalLink, LevelBadge, SourceBadge } from './ui';
 import { WatchButton } from './WatchButton';
 
