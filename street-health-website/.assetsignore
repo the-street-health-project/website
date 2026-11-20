@@ -1,0 +1,6 @@
+# Files in the repo that aren't part of the website, so Cloudflare doesn't publish them.
+.git
+.github
+.assetsignore
+wrangler.jsonc
+README.md

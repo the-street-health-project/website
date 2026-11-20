@@ -37,6 +37,7 @@ its pages, so you always know which program you're in.
 | `partners.html` | Blair Ridge Dental, His Hands Free Clinic, Lions Club of Kanchipuram Host (with flip-over thank-you cards), a 3D photo carousel, and the sponsor levels |
 | `sponsor.html` | Sponsorship & donation guide: six levels (Neighbor $100+ to Cornerstone $5,000+), a slider that shows your level, kits and perks, how to give, the Cornerstone sponsors wall, FAQ |
 | `get-involved.html` | Three ways to help, a way to help NiFi, the kit calculator and the contact form (`?topic=nifi` picks NiFi as the topic) |
+| `privacy.html`, `terms.html` | Privacy policy and terms of use, linked in every footer. They describe what the site and NiFi actually do (contact form via Web3Forms, Cloudflare hosting and analytics, Google Fonts, NiFi's on-device storage and its Open-Meteo forecast request); update them if any of that changes |
 | `404.html` | Shown by Cloudflare for any missing page |
 
 To add a page to a program, copy one of its pages, keep its branch bar (the
@@ -57,6 +58,9 @@ assets/js/partners.js     Partners: the 3D photo carousel
 assets/js/story.js        the interactive story
 assets/js/nifi.js         every page: the NiFi arrow, its dropdown, and the dive into NiFi
                           (any link with data-dive plays the dive first)
+assets/js/smooth.js       every page: smooth scrolling with Lenis (off with reduced motion;
+                          paused during the NiFi transitions)
+assets/js/lenis.min.js   Lenis 1.3.27 (MIT), the smooth-scrolling library
 assets/js/return.js       the trip back from NiFi: a heartbeat, tiles turning over into the
                           red cross, the cross flying to the logo (the NiFi page's logo, and
                           the NiFi app's "A program of..." links, which load this same file)
@@ -93,6 +97,11 @@ off automatically and everything shows immediately.
   The NiFi door on the home page and "Check your river" play it too, so going
   from the Care Kits side into NiFi always feels like a dive. Esc cancels it.
   With reduced motion on, the links simply open.
+
+- **The trip back** (`assets/js/return.js`): leaving NiFi plays a heartbeat
+  instead. The full 5 seconds plays once per visit, and after that the same
+  show runs in 2 seconds. A tap, click, Enter or Space skips straight to the
+  page, and Esc cancels.
 
 Animation loops pause when they're off screen or the tab is hidden, so they
 don't drain batteries. The heavy parts (`home.js`, `globe.js`) only load on the
