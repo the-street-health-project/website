@@ -15,12 +15,16 @@
   --color-ink-3: #8fbba2;
   --color-paper: #020604; /* the page: nearly black */
   --color-card: #07110c; /* boxes: very dark green */
-  --color-line: #1c3b2a;
+  --color-line: rgb(57 255 136 / 0.17); /* see-through, so borders blend into any dark surface */
 
   --color-sky: #39ff88; /* neon green: brand, buttons, links */
   --color-sky-dark: #8dffbd; /* lighter green: hover, and headings on dark green */
   --color-sky-soft: #0c2a1a; /* dark green: tinted backgrounds */
   --color-on-accent: #02140a; /* text on neon green, gold, or yellow fills */
+  /* The one unexpected accent (onyx black + mint + electric indigo): only on primary buttons,
+     the ones we most want pressed. White text on it is 5.6:1. */
+  --color-accent: #6e3bff;
+  --color-accent-dark: #5a2bef;
   --color-gold: #f2b324; /* prairie gold: watch-list stars and highlights, with dark text */
   --color-gold-soft: #221b05;
 
@@ -498,7 +502,7 @@ html.cc-fx .cc-steps > li:nth-child(3) { animation-delay: 0.65s; }
     background-color 0.15s;
 }
 .cc-key--primary {
-  box-shadow: 0 5px 0 0 #0c8a45, 0 0 18px rgb(57 255 136 / 0.45), 0 12px 18px -8px rgb(0 0 0 / 0.8);
+  box-shadow: 0 5px 0 0 #3f18b8, 0 0 18px rgb(110 59 255 / 0.5), 0 12px 18px -8px rgb(0 0 0 / 0.8);
 }
 .cc-key--secondary {
   box-shadow: 0 5px 0 0 #0f4f2e, 0 0 12px rgb(57 255 136 / 0.15), 0 12px 18px -8px rgb(0 0 0 / 0.8);
@@ -510,10 +514,16 @@ html.cc-fx .cc-key:hover:not(:disabled) {
   transform: translateY(4px);
 }
 .cc-key--primary:active:not(:disabled) {
-  box-shadow: 0 1px 0 0 #0c8a45, 0 0 26px rgb(57 255 136 / 0.7);
+  box-shadow: 0 1px 0 0 #3f18b8, 0 0 26px rgb(110 59 255 / 0.7);
 }
 .cc-key--secondary:active:not(:disabled) {
   box-shadow: 0 1px 0 0 #0f4f2e, 0 0 16px rgb(57 255 136 / 0.3);
+}
+.cc-key--danger {
+  box-shadow: 0 5px 0 0 #7a1419, 0 0 16px rgb(192 38 45 / 0.4), 0 12px 18px -8px rgb(0 0 0 / 0.8);
+}
+.cc-key--danger:active:not(:disabled) {
+  box-shadow: 0 1px 0 0 #7a1419, 0 0 22px rgb(192 38 45 / 0.6);
 }
 
 /* ---------- Page titles: neon lettering with depth that swings up into place ---------- */
