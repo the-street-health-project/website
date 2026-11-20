@@ -64,7 +64,7 @@ export const turnFor = (tab: keyof typeof TURNS): TurnKind => TURNS[tab];
 const TURN_CLASSES = ['surface', 'dive', 'page', 'power', 'dial', 'to-holo', 'to-flat', 'warp'].map((k) => `cc-turn-${k}`);
 
 type DocWithTransitions = Document & {
-  startViewTransition?: (update: () => Promise<void> | void) => { finished: Promise<void> };
+  startViewTransition?: (update: () => Promise<void> | void) => { ready: Promise<void>; finished: Promise<void> };
 };
 
 /** Waits (at most about half a second) for the new screen to replace its "Loading…" placeholder. */
@@ -97,7 +97,10 @@ export function turnPage(kind: TurnKind, update: () => void, afterUpdate: () => 
       afterUpdate();
       await screenReady();
     });
-    transition.finished.finally(done);
+    // If the browser skips the turn (say, the tab was hidden), these promises reject. That's fine:
+    // the screen still changes. Catching them keeps the console clean.
+    transition.ready.catch(() => {});
+    transition.finished.catch(() => {}).finally(done);
   } catch {
     done();
     update();
