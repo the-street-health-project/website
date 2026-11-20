@@ -142,13 +142,18 @@ export function SettingsPage() {
           <ExternalLink href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</ExternalLink> and U.S. Census Bureau. Font:
           Atkinson Hyperlegible, designed by the Braille Institute for readers with low vision. Your settings stay on this device.
         </p>
+        <p className="mt-2 text-ink-2">
+          <ExternalLink href={`${PARENT_SITE ?? SHP_SITE}privacy.html`}>Privacy</ExternalLink>
+          {' · '}
+          <ExternalLink href={`${PARENT_SITE ?? SHP_SITE}terms.html`}>Terms of use</ExternalLink>
+        </p>
       </Card>
 
       <Card>
         {confirmReset ? (
           <div className="flex flex-wrap items-center gap-3">
             <p className="font-bold">Erase your settings and start over?</p>
-            <Button className="!bg-high" onClick={reset}>
+            <Button variant="danger" onClick={reset}>
               Yes, start over
             </Button>
             <Button variant="secondary" onClick={() => setConfirmReset(false)}>

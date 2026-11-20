@@ -4,7 +4,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { LocationPicker } from '../components/LocationPicker';
-import { TrendChart, type ChartSeries } from '../components/TrendChart';
+import { TrendChart, type ChartSeries } from '../components/Charts';
 import { Button, Card, Depth, Disclaimer, ExternalLink, LevelBadge, PageTitle } from '../components/ui';
 import { WatchButton } from '../components/WatchButton';
 import { WatchedRivers } from '../components/WatchedRivers';

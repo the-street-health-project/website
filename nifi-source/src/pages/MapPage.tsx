@@ -296,7 +296,7 @@ export function MapPage() {
     <div className="relative h-full overflow-hidden">
       <div className="absolute inset-0 lg:right-[27rem]" role="region" aria-label="Map of Iowa water monitoring sites">
         {view === '3d' ? (
-          <Safe3D className="cc-stage h-full" placeholder={<div className="cc-stage grid h-full place-items-center">Starting the hologram…</div>}>
+          <Safe3D askOnSlow={false} className="cc-stage h-full" placeholder={<div className="cc-stage grid h-full place-items-center">Starting the hologram…</div>}>
             <HologramIowa sites={liveSites} selectedId={selectedId} onSelect={select} reducedMotion={reducedMotion} className="h-full w-full" />
           </Safe3D>
         ) : (
